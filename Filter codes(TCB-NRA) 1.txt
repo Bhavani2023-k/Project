@@ -1,0 +1,131 @@
+QUESTION-SA1
+
+[Client Status] in ('Live','Terminal') and [Type] NOT IN ('CIS~CLASS','INHOUSE','PROJECT','TSFAGENCY') 
+[Code] = "SUBTRUST" AND [Data] = 'Separate Legal Arrangement'
+[Client No_] IN ('JEC00404','JEC03600','JEC03795','JEC03909','JEC04033','JEC04115')
+TYPE EQUALS INDV
+TYPE EQUALS SUBTRUST
+ENTITY TYPE EQUALS BENOWNER
+COMPLETED
+----------------------------------------------------------------
+QUESTION-TA1(B)
+
+BUSINESS ACTIVITY EQUALS PRIVATETRU
+[Type] = "TRUST"
+[Type] = "COMPANY" AND [Jurisdiction] = 'JEY'
+TYPE EQUALS SUBTRUST
+[Type] = "COMPANY" and [Jurisdiction] != 'JEY'
+JURISDICTION EQUALS JEY
+COMPLETED
+----------------------------------------------------------------
+QUESTION - TA1(A)
+
+[Type] = "TRUST"
+[Type] = "COMPANY" AND [Jurisdiction] = 'JEY'
+TYPE EQUALS SUBTRUST
+[Type] = "COMPANY" and [Jurisdiction] != 'JEY'
+JURISDICTION EQUALS JEY
+COMPLETED
+-----------------------------------------------------------------------
+TA2
+
+*[Type] IN ("TRUST","UNITTRUST")
+*TYPE EQUALS COMPANY
+*TYPE EQUALS LPART
+*TYPE EQUALS SUBTRUST
+*[Entity Type] = "DIR" AND [Entity No_] IN ('JEC00820','JEC00821','JEC02931','JEC03058') AND [Date Appointed] <= '2023-12-31'
+*[Entity Type] = "DIR" AND !CONTAINS([Entity No_],'JEE') AND !CONTAINS([Entity No_],'JEC') AND [Date Appointed] <= '2019-12-31'
+*[Entity Type] = "GPT" AND [Date Appointed] <= '2019-12-31' AND CONTAINS([Entity No_],'JEC')
+*[Entity Type] = "GPT" AND !CONTAINS([Entity No_],'JEC') AND !CONTAINS([Entity No_],'JEE') AND [Date Appointed] <= '2019-12-31'
+*TYPE EQUALS FOUND
+*[Entity Type] = "COU" AND [Date Appointed] <= '2019-12-31' AND CONTAINS([Entity No_],'JEC')
+*[Entity Type] = "COU" AND !CONTAINS([Entity No_],'JEC') AND !CONTAINS([Entity No_],'JEE') AND [Date Appointed] <= '2019-12-31'
+*[Entity Type] = "GPT" AND [Date Appointed] <= '2019-12-31'
+*[Entity Type] = "COU" AND [Date Appointed] <= '201--12-31'
+*JURISDICTION EQUALS JEY
+*[Resource_Entity Type] = "DIR" AND !CONTAINS([Resource_Entity No_],'JEC') AND !CONTAINS([Resource_Entity No_],'JEE') AND [Resource_Date Appointed] <= '2019-12-31'
+*[Resource_Entity Type] = "DIR" AND !CONTAINS([Resource_Entity No_],'JEC') AND !CONTAINS([Resource_Entity No_],'JEE') AND [Resource_Date Appointed] <= '2019-12-31'
+*[Entity Type] in ("CTS",'TST') AND [Date Appointed]<='2023-12-31'
+*!Contains([Entity No_],"JEE") AND !Contains([Entity No_],"JEC") AND [Date Appointed]<='2023-12-31'
+*JURISDICTION EQUALS JEY
+*Entity No_ contains JEC
+*[Resource_Entity Type] = "DIR" AND !CONTAINS([Resource_Entity No_],'JEE') AND !CONTAINS([Resource_Entity No_],'JEC') 
+--------------------------------------------------------------------------------
+QUESTION TA3
+
+[Type] IN ("TRUST","UNITTRUST")
+TYPE EQUALS COMPANY
+TYPE EQUALS LPART
+TYPE EQUALS FOUND
+
+TYPE EQUALS SUBTRUST
+JURISDICTION EQUALS JEY
+COMPLETED
+-----------------------------------------------------------------
+QUESTION TA4
+
+[Code] = "RGO" AND [Type] = 'COMPANY'
+JURISDICTION EQUALS JEY
+--------------------------------------------------
+QUESTION TA5
+
+CODE EQUALS DIR
+JURISDICTION EQUALS JEY
+----------------------------------
+QUESTION TA6
+
+[Type] IN ("TRUST","UNITTRUST")
+TYPE EQUALS SUBTRUST
+SERVICE_CODE EQUALS TST
+--------------------------------------
+QUESTION TA8
+
+[Type] IN ("FOUND")
+SERVICE_CODE EQUALS FCM
+JURISDICTION EQUALS JEY
+
+----------------------------------------------
+QUESTION TA14
+
+RISK RATING EQUALS HIGH
+[Type] IN ("TRUST","UNITTRUST")
+TYPE EQUALS SUBTRUST
+TYPE EQUALS COMPANY
+JURISDICTION EQUALS JEY
+--------------------------------------------
+QUESTION TA22
+
+BUSINESS ACTIVITY EQUALS SENSITIVE
+TYPE EQUALS TRUST
+TYPE EQUALS COMPANY
+JURISDICTION EQUALS JEY
+--------------------------------------------------
+QUESTION TA26
+
+[Entity Type] = "DIR"
+ENTITY NO_ CONTAINS JEE
+JURISDICTION EQUALS JEY
+-----------------------------------------------
+QUESTION SA12
+
+("G_L Account No_" >= '40000' AND "G_L Account No_" <= '59998') 
+sum_amount <> 0
+
+
+
+
+
+
+Foot Print
+
+A8(A), A9(C), A9(D), A9(F), A9(H), A22
+
+
+
+
+
+
+
+
+
+

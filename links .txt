@@ -1,0 +1,7 @@
+alteryx floder:
+
+https://apexfs.sharepoint.com/sites/PRJ3256AlteryxDecommission-SharedChannelPRJ3256AlteryxDecommission/Shared%20Documents/Forms/AllItems.aspx?newTargetListUrl=%2Fsites%2FPRJ3256AlteryxDecommission%2DSharedChannelPRJ3256AlteryxDecommission%2FShared%20Documents&viewpath=%2Fsites%2FPRJ3256AlteryxDecommission%2DSharedChannelPRJ3256AlteryxDecommission%2FShared%20Documents%2FForms%2FAllItems%2Easpx&id=%2Fsites%2FPRJ3256AlteryxDecommission%2DSharedChannelPRJ3256AlteryxDecommission%2FShared%20Documents%2FPRJ3256%20Alteryx%20Decommission%2F1%2E%20Scoping&viewid=f9f43493%2Dbc26%2D4f46%2D8814%2D4b10fb7f3cf9
+
+Alteryx status link:
+
+https://dev.azure.com/ApexData/Alteryx%20Decomission/_sprints/taskboard/Alteryx%20Decomission%20Team/Alteryx%20Decomission/Sprint%2007

@@ -1,0 +1,15 @@
+// NRA Details report// 
+
+select distinct
+JC.CLIENT_NO_,JC.type,JC.name, 
+CASE WHEN CAST(DATE_OF_EXIT AS DATE) = '1753-01-01' THEN NULL 
+ELSE CAST(DATE_OF_EXIT AS DATE) 
+end as DATE_OF_EXIT,
+clientanalysisb AS Manager,clientanalysisc AS Director,clientanalysisd AS Account,clientanalysise AS Client_Grp,clientanalysisf AS Solution_line,
+CASE When Status = 0 THEN 'Prospective' When Status = 1 THEN 'Live'
+When Status = 2 THEN 'Terminal' When Status = 3 THEN 'Closed' ELSE 'Null' END AS Client_Status
+from CLEANSING_ZONE.JER_NAVONE_DBO.CZ_JER_NAVONE_DBO__JERSEY_CLIENT JC 
+where
+JC.client_no_ not in ('JEC03200','JEC03204','JEC01817','JEC01823','JEC04353')
+ and status = 2
+ order by JC.client_no_  asc

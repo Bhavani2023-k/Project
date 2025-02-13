@@ -1,0 +1,210 @@
+AVGCOST# = average(V_ALPHA_SPRING_WH_PBI[Monthly Security_ID Count])
+
+Bloomberg_Null = IF(ISBLANK(V_ALPHA_SPRING_WH_PBI[Bloomberg_Unique_ID]),0,1)
+
+CAC (AWC) = V_ALPHA_SPRING_WH_PBI[Application]&V_ALPHA_SPRING_WH_PBI[Asset_Type]&V_ALPHA_SPRING_WH_PBI[Date]&V_ALPHA_SPRING_WH_PBI[Security_ID]
+
+CAC (CWC) = V_ALPHA_SPRING_WH_PBI[Application]&V_ALPHA_SPRING_WH_PBI[Asset_Type]&
+V_ALPHA_SPRING_WH_PBI[Date]&V_ALPHA_SPRING_WH_PBI[Client]&V_ALPHA_SPRING_WH_PBI[Security_ID]
+
+CAC (FWC) = V_ALPHA_SPRING_WH_PBI[Application]&V_ALPHA_SPRING_WH_PBI[Client_Costing_Portfolio]&
+V_ALPHA_SPRING_WH_PBI[Date]&V_ALPHA_SPRING_WH_PBI[Client]&V_ALPHA_SPRING_WH_PBI[Security_ID]
+
+CAC (LWC) = V_ALPHA_SPRING_WH_PBI[Application]&V_ALPHA_SPRING_WH_PBI[Location]&V_ALPHA_SPRING_WH_PBI[Date]&V_ALPHA_SPRING_WH_PBI[Client]&V_ALPHA_SPRING_WH_PBI[Security_ID]
+
+CACUF = V_ALPHA_SPRING_WH_PBI[Corparate Action Cost 1]*V_ALPHA_SPRING_WH_PBI[COrporateActionCostunoptimized final]
+
+CorporateActionCost Final = (((  (V_ALPHA_SPRING_WH_PBI[Costing_CorpAction]/V_ALPHA_SPRING_WH_PBI[Monthly Security_ID Count]) + V_ALPHA_SPRING_WH_PBI[SecAccessFee Final])
+*V_ALPHA_SPRING_WH_PBI[costing_premium]*V_ALPHA_SPRING_WH_PBI[Bloomberg_Null])*V_ALPHA_SPRING_WH_PBI[Corparate Action Cost 1])
+
+CorporateActionCost(Unoptimized) = IF(V_ALPHA_SPRING_WH_PBI[Bloomberg_Null]=0,0, (((CALCULATE( AVERAGE(V_ALPHA_SPRING_WH_PBI[Costing_CorpAction]),
+ALLEXCEPT(V_ALPHA_SPRING_WH_PBI,V_ALPHA_SPRING_WH_PBI[month_year],V_ALPHA_SPRING_WH_PBI[Security_ID],V_ALPHA_SPRING_WH_PBI[Client])))/
+V_ALPHA_SPRING_WH_PBI[Monthly Security ID and Client Count]))+V_ALPHA_SPRING_WH_PBI[SecAccessFee (Unoptimized)])*
+V_ALPHA_SPRING_WH_PBI[costing_premium]
+ 
+COrporateActionCostunoptimized final = IF(V_ALPHA_SPRING_WH_PBI[Bloomberg_Null]=0,0,(V_ALPHA_SPRING_WH_PBI[Costing_CorpAction]/
+V_ALPHA_SPRING_WH_PBI[Monthly Security ID and Client Count])+V_ALPHA_SPRING_WH_PBI[SecAccessFee (Unoptimized)])* V_ALPHA_SPRING_WH_PBI[costing_premium] 
+
+Daily Client Count = (( calculate (COUNT(V_ALPHA_SPRING_WH_PBI[Client]),
+ALLEXCEPT(V_ALPHA_SPRING_WH_PBI,V_ALPHA_SPRING_WH_PBI[Date],
+V_ALPHA_SPRING_WH_PBI[Client]))))
+
+Daily SEC_C_SIDC Security_ID Count = calculate (COUNT(V_ALPHA_SPRING_WH_PBI[SEC_C_SIDC]),
+ALLEXCEPT(V_ALPHA_SPRING_WH_PBI,V_ALPHA_SPRING_WH_PBI[Date],V_ALPHA_SPRING_WH_PBI[Costing_Source],
+V_ALPHA_SPRING_WH_PBI[SEC_C_SIDC]))
+
+Daily Security ID and Client Count = V_ALPHA_SPRING_WH_PBI[Daily Security_ID Count]+V_ALPHA_SPRING_WH_PBI[Daily Client Count]
+
+Daily Security_ID Count = (( calculate (COUNT(V_ALPHA_SPRING_WH_PBI[Security_ID]),
+ALLEXCEPT(V_ALPHA_SPRING_WH_PBI,V_ALPHA_SPRING_WH_PBI[Date],
+V_ALPHA_SPRING_WH_PBI[Security_ID]))))
+
+Daily SIDC Security_ID Count = (( calculate (COUNT(V_ALPHA_SPRING_WH_PBI[SECID_SIDC]),
+ALLEXCEPT(V_ALPHA_SPRING_WH_PBI,V_ALPHA_SPRING_WH_PBI[Date],
+V_ALPHA_SPRING_WH_PBI[SECID_SIDC]))))
+
+EOD/SECID = V_ALPHA_SPRING_WH_PBI[Costing_End_of_Day_Pricing]/V_ALPHA_SPRING_WH_PBI[Monthly SBM Security_ID Count]
+
+EOD/SECIDC_unoptimized = (V_ALPHA_SPRING_WH_PBI[Costing_End_of_Day_Pricing]/V_ALPHA_SPRING_WH_PBI[Daily SEC_C_SIDC Security_ID Count])
+* V_ALPHA_SPRING_WH_PBI[costing_premium]
+
+EOD/SECIDSBM_unoptimized = V_ALPHA_SPRING_WH_PBI[Costing_End_of_Day_Pricing]/V_ALPHA_SPRING_WH_PBI[Monthly SEC_C_SBM Security_ID Count]
+
+EODSIDC/DSID*P = (V_ALPHA_SPRING_WH_PBI[Costing_End_of_Day_Pricing]/V_ALPHA_SPRING_WH_PBI[SECID_SIDC])* V_ALPHA_SPRING_WH_PBI[costing_premium]
+
+FC bloomberg(unoptimized) Final = (IFERROR( ((V_ALPHA_SPRING_WH_PBI[FC1]/[Fixed Cost (Bloomberg Monthly Count)])*V_ALPHA_SPRING_WH_PBI[Fixed cost bloomberg(num)]),0))
+
+FC refinitiv(unoptimized) Final = (IFERROR( ((V_ALPHA_SPRING_WH_PBI[FC1]/[Fixed Cost (Refinitiv Monthly Count)])*V_ALPHA_SPRING_WH_PBI[Fixed Cost Refinitiv(num)]),0))
+
+FC1 = V_ALPHA_SPRING_WH_PBI[Security Master Cost (Unoptimized)]+V_ALPHA_SPRING_WH_PBI[Pricing Cost (Unoptimized)]+
+V_ALPHA_SPRING_WH_PBI[COrporateActionCostunoptimized final]
+
+Fixed Cost (Bloomberg Filter) = (CALCULATE(SUM(V_ALPHA_SPRING_WH_PBI[Fixed Cost 1]),FILTER(V_ALPHA_SPRING_WH_PBI,V_ALPHA_SPRING_WH_PBI[FixedCosting_Source]="Bloomberg")))
+
+Fixed Cost (Bloomberg Monthly Count) = 
+CALCULATE(count(V_ALPHA_SPRING_WH_PBI[Security_ID]),ALLEXCEPT(V_ALPHA_SPRING_WH_PBI,V_ALPHA_SPRING_WH_PBI[FixedCosting_MonthYear],
+V_ALPHA_SPRING_WH_PBI[Bloomberg_Unique_ID]))
+
+Fixed Cost (Bloomberg) = SUMX(V_ALPHA_SPRING_WH_PBI,[Fixed Cost Bloomberg Total]* V_ALPHA_SPRING_WH_PBI[FixedCosting_FixedCost])
+
+Fixed Cost (Bloomberg1) = (IFERROR( ((V_ALPHA_SPRING_WH_PBI[Fixed Cost 1]/[Fixed Cost (Bloomberg Monthly Count)])*V_ALPHA_SPRING_WH_PBI[Fixed cost bloomberg(num)]),0))
+
+Fixed Cost (Refinitiv Filter) = CALCULATE(SUM(V_ALPHA_SPRING_WH_PBI[Fixed Cost 1]),FILTER(V_ALPHA_SPRING_WH_PBI,V_ALPHA_SPRING_WH_PBI[FixedCosting_Source]="Refinitiv"))
+
+Fixed Cost (Refinitiv Monthly Count) = 
+CALCULATE(COUNT(V_ALPHA_SPRING_WH_PBI[FixedCosting_Source]),ALLEXCEPT(V_ALPHA_SPRING_WH_PBI,V_ALPHA_SPRING_WH_PBI[FixedCosting_MonthYear],
+V_ALPHA_SPRING_WH_PBI[Bloomberg_Unique_ID]))
+
+Fixed Cost (Refinitiv) = SUMX(V_ALPHA_SPRING_WH_PBI,[Fixed Cost Refinitiv Total]* V_ALPHA_SPRING_WH_PBI[FixedCosting_FixedCost])
+
+Fixed Cost 1 = V_ALPHA_SPRING_WH_PBI[Security Master Cost]+ V_ALPHA_SPRING_WH_PBI[Pricing Cost]+V_ALPHA_SPRING_WH_PBI[CorporateActionCost Final]
+
+Fixed Cost Bloomberg Count = CALCULATE(COUNT(V_ALPHA_SPRING_WH_PBI[FixedCosting_Source]),
+FILTER(V_ALPHA_SPRING_WH_PBI,V_ALPHA_SPRING_WH_PBI[FixedCosting_Source]="Bloomberg"))
+
+Fixed Cost Bloomberg Total = [Fixed Cost (Bloomberg Filter)]/ [Fixed Cost (Bloomberg Monthly Count)]
+
+Fixed cost bloomberg(num) = V_ALPHA_SPRING_WH_PBI[FixedCosting_FixedCost]*V_ALPHA_SPRING_WH_PBI[Bloomberg_Null]*
+V_ALPHA_SPRING_WH_PBI[Userdeff3_bloomberg]*V_ALPHA_SPRING_WH_PBI[Source Bloomberg]
+
+Fixed Cost Refinitiv = (IFERROR(((V_ALPHA_SPRING_WH_PBI[Fixed Cost 1]/[Fixed Cost (Refinitiv Monthly Count)])*V_ALPHA_SPRING_WH_PBI[Fixed Cost Refinitiv(num)]),0))
+
+Fixed Cost Refinitiv Count = CALCULATE(COUNT(V_ALPHA_SPRING_WH_PBI[FixedCosting_Source]),
+FILTER(V_ALPHA_SPRING_WH_PBI,V_ALPHA_SPRING_WH_PBI[FixedCosting_Source]="Refinitiv"))
+
+Fixed Cost Refinitiv Total = [Fixed Cost (Refinitiv Filter)]/ [Fixed Cost (Refinitiv Monthly Count)]
+
+Fixed Cost Refinitiv(num) = V_ALPHA_SPRING_WH_PBI[FixedCosting_FixedCost]*V_ALPHA_SPRING_WH_PBI[Bloomberg_Null]*
+V_ALPHA_SPRING_WH_PBI[Userdeff3_bloomberg]*V_ALPHA_SPRING_WH_PBI[Source refinitiv]
+
+FixedCost(Bloomberg) = IF(AND(V_ALPHA_SPRING_WH_PBI[Bloomberg_Null]=0,V_ALPHA_SPRING_WH_PBI[Userdeff3_bloomberg]=0),0,1)
+
+Monthly Client Count = calculate (COUNT(V_ALPHA_SPRING_WH_PBI[Client]),
+ALLEXCEPT(V_ALPHA_SPRING_WH_PBI,V_ALPHA_SPRING_WH_PBI[month_year],
+V_ALPHA_SPRING_WH_PBI[Client]))
+
+Monthly SBM Security_ID Count = calculate (COUNT(V_ALPHA_SPRING_WH_PBI[SECIDBM]),
+ALLEXCEPT(V_ALPHA_SPRING_WH_PBI,V_ALPHA_SPRING_WH_PBI[month_year],
+V_ALPHA_SPRING_WH_PBI[SECIDBM]))
+
+Monthly SEC_C_SBM Security_ID Count = calculate (COUNT(V_ALPHA_SPRING_WH_PBI[SEC_C_SBM]),
+ALLEXCEPT(V_ALPHA_SPRING_WH_PBI,V_ALPHA_SPRING_WH_PBI[month_year],
+V_ALPHA_SPRING_WH_PBI[SEC_C_SBM]))
+
+Monthly Security ID and Client Count = V_ALPHA_SPRING_WH_PBI[Monthly Security_ID Count]+V_ALPHA_SPRING_WH_PBI[Monthly Client Count]
+
+Monthly Security_ID Count = calculate (COUNT(V_ALPHA_SPRING_WH_PBI[Security_ID]),
+ALLEXCEPT(V_ALPHA_SPRING_WH_PBI,V_ALPHA_SPRING_WH_PBI[month_year],
+V_ALPHA_SPRING_WH_PBI[Security_ID]))
+
+PC (AWC) = V_ALPHA_SPRING_WH_PBI[Application]&V_ALPHA_SPRING_WH_PBI[Asset_Type]&V_ALPHA_SPRING_WH_PBI[Date]&V_ALPHA_SPRING_WH_PBI[Security_ID]
+
+PC (CWC) = V_ALPHA_SPRING_WH_PBI[Application]&V_ALPHA_SPRING_WH_PBI[Asset_Type]&
+V_ALPHA_SPRING_WH_PBI[Date]&V_ALPHA_SPRING_WH_PBI[Client]&V_ALPHA_SPRING_WH_PBI[Security_ID]
+
+PC (FWC) = V_ALPHA_SPRING_WH_PBI[Application]&V_ALPHA_SPRING_WH_PBI[Client_Costing_Portfolio]&V_ALPHA_SPRING_WH_PBI[Date]&
+V_ALPHA_SPRING_WH_PBI[Client]&V_ALPHA_SPRING_WH_PBI[Security_ID]
+
+PC (LWC) = V_ALPHA_SPRING_WH_PBI[Application]&V_ALPHA_SPRING_WH_PBI[Location]&V_ALPHA_SPRING_WH_PBI[Date]&V_ALPHA_SPRING_WH_PBI[Security_ID]
+
+PCU Final = if(V_ALPHA_SPRING_WH_PBI[Monthly SBM Security_ID Count] >0,V_ALPHA_SPRING_WH_PBI[EOD/SECID],V_ALPHA_SPRING_WH_PBI[EODSIDC/DSID*P])
+
+PCU Final unoptimized = if(V_ALPHA_SPRING_WH_PBI[Monthly SEC_C_SBM Security_ID Count] >0,V_ALPHA_SPRING_WH_PBI[EOD/SECIDSBM_unoptimized],
+V_ALPHA_SPRING_WH_PBI[EOD/SECIDC_unoptimized])
+
+PriceAccessFee Final = if (V_ALPHA_SPRING_WH_PBI[Pricing Vendor Null]=0,0, (V_ALPHA_SPRING_WH_PBI[Costing_AccessFee]/V_ALPHA_SPRING_WH_PBI[Daily Security_ID Count]))
+*V_ALPHA_SPRING_WH_PBI[costing_premium]
+
+PriceAccessFee(Unoptimized) = if (V_ALPHA_SPRING_WH_PBI[Pricing Vendor Null]=0,0, 
+((CALCULATE( AVERAGE(V_ALPHA_SPRING_WH_PBI[Costing_AccessFee]),ALLEXCEPT(V_ALPHA_SPRING_WH_PBI,V_ALPHA_SPRING_WH_PBI[Date],
+V_ALPHA_SPRING_WH_PBI[Security_ID],V_ALPHA_SPRING_WH_PBI[Client])))/V_ALPHA_SPRING_WH_PBI[Daily Security ID and Client Count]))
+* V_ALPHA_SPRING_WH_PBI[costing_premium]
+
+PriceAccessFeeUnoptimized final = if (V_ALPHA_SPRING_WH_PBI[Pricing Vendor Null]=0,0, (V_ALPHA_SPRING_WH_PBI[Costing_AccessFee]/
+V_ALPHA_SPRING_WH_PBI[Daily Security ID and Client Count]))* V_ALPHA_SPRING_WH_PBI[costing_premium]
+
+PriceCostUnit (Unoptimized) = IF(V_ALPHA_SPRING_WH_PBI[Pricing Vendor Null]=0,0, ((( calculate (AVERAGE(V_ALPHA_SPRING_WH_PBI[Costing_End_of_Day_Pricing]),
+ALLEXCEPT(V_ALPHA_SPRING_WH_PBI,V_ALPHA_SPRING_WH_PBI[Costing_MonthYear],
+V_ALPHA_SPRING_WH_PBI[Security_ID],V_ALPHA_SPRING_WH_PBI[Client]))))/(V_ALPHA_SPRING_WH_PBI[Monthly Security ID and Client Count])))
+
+PriceCostUnit 2 = IF(V_ALPHA_SPRING_WH_PBI[Pricing Vendor Null]=0,0, ((( calculate (AVERAGE(V_ALPHA_SPRING_WH_PBI[Costing_End_of_Day_Pricing]),
+ALLEXCEPT(V_ALPHA_SPRING_WH_PBI,V_ALPHA_SPRING_WH_PBI[Costing_MonthYear],
+V_ALPHA_SPRING_WH_PBI[Security_ID]))))/(V_ALPHA_SPRING_WH_PBI[Monthly Security_ID Count])) )
+
+PriceCostUnit_FINAL1 = if (V_ALPHA_SPRING_WH_PBI[Pricing Vendor Null]=0,0, (V_ALPHA_SPRING_WH_PBI[Costing_End_of_Day_Pricing]/
+V_ALPHA_SPRING_WH_PBI[Daily Security_ID Count]))* V_ALPHA_SPRING_WH_PBI[costing_premium]
+
+PriceCostUnit(Unoptimized Final) = IF(V_ALPHA_SPRING_WH_PBI[Pricing Vendor Null]=0,0,(V_ALPHA_SPRING_WH_PBI[Costing_End_of_Day_Pricing]
+/V_ALPHA_SPRING_WH_PBI[Daily Security ID and Client Count]))* V_ALPHA_SPRING_WH_PBI[costing_premium]
+
+Pricing Cost = V_ALPHA_SPRING_WH_PBI[PCU Final]+V_ALPHA_SPRING_WH_PBI[PriceAccessFee Final]
+
+Pricing Cost (Unoptimized) = V_ALPHA_SPRING_WH_PBI[PCU Final unoptimized]+V_ALPHA_SPRING_WH_PBI[PriceAccessFeeUnoptimized final]
+
+Pricing Vendor Null = IF(ISBLANK(V_ALPHA_SPRING_WH_PBI[Pricing_Vendor]),0,1)
+
+SecAccessFee (Unoptimized) = if (V_ALPHA_SPRING_WH_PBI[Bloomberg_Null]=0,0, 
+(V_ALPHA_SPRING_WH_PBI[Costing_AccessFee]/V_ALPHA_SPRING_WH_PBI[Daily Security ID and Client Count]))* V_ALPHA_SPRING_WH_PBI[costing_premium]
+
+SecAccessFee 1 = IF(ISBLANK(V_ALPHA_SPRING_WH_PBI[Bloomberg_Unique_ID]),0,1)
+
+SecAccessFee Final = if (V_ALPHA_SPRING_WH_PBI[Bloomberg_Null]=0,0, (V_ALPHA_SPRING_WH_PBI[Costing_AccessFee]
+/V_ALPHA_SPRING_WH_PBI[Daily Security_ID Count])) * V_ALPHA_SPRING_WH_PBI[costing_premium]
+
+SecCostUnit_final = if (V_ALPHA_SPRING_WH_PBI[Bloomberg_Null]=0,0, ((CALCULATE( AVERAGE(V_ALPHA_SPRING_WH_PBI[Costing_Secruity_Master_and_Packaged]),
+ALLEXCEPT(V_ALPHA_SPRING_WH_PBI,V_ALPHA_SPRING_WH_PBI[month_year],V_ALPHA_SPRING_WH_PBI[Security_ID])))/V_ALPHA_SPRING_WH_PBI[Monthly Security_ID Count]))
+* V_ALPHA_SPRING_WH_PBI[costing_premium]
+
+SecCostUnit(Unpotimized) = if (V_ALPHA_SPRING_WH_PBI[Bloomberg_Null]=0,0, (V_ALPHA_SPRING_WH_PBI[Costing_Secruity_Master_and_Packaged]
+/V_ALPHA_SPRING_WH_PBI[Monthly Security ID and Client Count]))* V_ALPHA_SPRING_WH_PBI[costing_premium]
+
+Security Cost = SUMX(V_ALPHA_SPRING_WH_PBI,V_ALPHA_SPRING_WH_PBI[Security Master Cost]+ V_ALPHA_SPRING_WH_PBI[Fixed Cost (Bloomberg1)]+
+V_ALPHA_SPRING_WH_PBI[Fixed Cost Refinitiv])
+ 
+Security Master Cost = V_ALPHA_SPRING_WH_PBI[SecCostUnit_final]+V_ALPHA_SPRING_WH_PBI[SecAccessFee Final]
+ 
+Security Master Cost (Unoptimized) = V_ALPHA_SPRING_WH_PBI[SecCostUnit(Unpotimized)]+V_ALPHA_SPRING_WH_PBI[SecAccessFee (Unoptimized)]
+ 
+SMC (AWC) = V_ALPHA_SPRING_WH_PBI[Application]&V_ALPHA_SPRING_WH_PBI[Asset_Type]&V_ALPHA_SPRING_WH_PBI[Date]&V_ALPHA_SPRING_WH_PBI[Security_ID]
+
+SMC (CWC) = V_ALPHA_SPRING_WH_PBI[Application]&V_ALPHA_SPRING_WH_PBI[Asset_Type]&V_ALPHA_SPRING_WH_PBI[Date]
+&V_ALPHA_SPRING_WH_PBI[Client]&V_ALPHA_SPRING_WH_PBI[Security_ID] 
+
+SMC (FWC) = V_ALPHA_SPRING_WH_PBI[Application]&V_ALPHA_SPRING_WH_PBI[Client_Costing_Portfolio]
+&V_ALPHA_SPRING_WH_PBI[Date]&V_ALPHA_SPRING_WH_PBI[Client]&V_ALPHA_SPRING_WH_PBI[Security_ID]
+
+SMC (LWC) = V_ALPHA_SPRING_WH_PBI[Application]&V_ALPHA_SPRING_WH_PBI[Location]&V_ALPHA_SPRING_WH_PBI[Date]&V_ALPHA_SPRING_WH_PBI[Security_ID]
+
+Total Cost = SUMX(V_ALPHA_SPRING_WH_PBI,V_ALPHA_SPRING_WH_PBI[Security Master Cost]+V_ALPHA_SPRING_WH_PBI[Pricing Cost]+V_ALPHA_SPRING_WH_PBI[CorporateActionCost Final]
++ V_ALPHA_SPRING_WH_PBI[Fixed Cost (Bloomberg)]+ V_ALPHA_SPRING_WH_PBI[Fixed Cost (Refinitiv)])
+
+Total Cost (Security) = SUMX(V_ALPHA_SPRING_WH_PBI,V_ALPHA_SPRING_WH_PBI[Security Cost]+ V_ALPHA_SPRING_WH_PBI[CorporateActionCost Final])
+
+Total Cost (Unoptimized) = V_ALPHA_SPRING_WH_PBI[Security Master Cost (Unoptimized)]+V_ALPHA_SPRING_WH_PBI[Pricing Cost (Unoptimized)]
++V_ALPHA_SPRING_WH_PBI[COrporateActionCostunoptimized final]+V_ALPHA_SPRING_WH_PBI[FC bloomberg(unoptimized) Final]
++V_ALPHA_SPRING_WH_PBI[FC refinitiv(unoptimized) Final]
+
+Total Cost 1 = V_ALPHA_SPRING_WH_PBI[Security Master Cost]+V_ALPHA_SPRING_WH_PBI[Pricing Cost]
++V_ALPHA_SPRING_WH_PBI[CorporateActionCost Final]+ V_ALPHA_SPRING_WH_PBI[Fixed Cost (Bloomberg1)]
+
+

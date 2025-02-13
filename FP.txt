@@ -1,0 +1,32 @@
+//Foot prints//
+
+WITH A AS (
+select 
+JC.CLIENT_NO_,JC.type,JC.name,JC.global_dimension_1_code as Legal_entity,
+
+        CASE    WHEN CAST(DATE_OF_EXIT AS DATE) = '1753-01-01' THEN NULL    ELSE CAST(DATE_OF_EXIT AS DATE) end as DATE_OF_EXIT,JC.STATUS,JC.ClientAnalysisE as Client_Group,JC.ClientAnalysisF as Solution_Line,
+JCE.ENTITY_NO_,JCE.ENTITY_TYPE,JCE.ENTITY_NAME,JCE.APPOINTMENT_CLASSIFICATION,
+CASE When Status = 0 THEN 'Prospective' When Status = 1 THEN 'Live'
+When Status = 2 THEN 'Terminal' When Status = 3 THEN 'Closed' ELSE 'Null' END AS Client_Status
+from CLEANSING_ZONE.JER_NAVONE_DBO.CZ_JER_NAVONE_DBO__JERSEY_CLIENT JC
+join CLEANSING_ZONE.JER_NAVONE_DBO.CZ_JER_NAVONE_DBO__JERSEY_CLIENT_ENTITY JCE on JCE.client_no_ = JC.client_no_
+where
+not contains(JC.client_no_, 'Temp') and JC.client_no_ not in ('JEC03200','JEC03204','JEC01817','JEC01823','JEC04353')
+and date_of_exit is not null),
+
+B as (
+select CBAT.client_no_, CBAT.TIMESTAMP,CBAT.BUSINESS_ACTIVITY,BAT.RISK_RATING
+from  CLEANSING_ZONE.JER_NAVONE_DBO.CZ_JER_NAVONE_DBO__JERSEY_CLIENT_BUS__ACTIVITY_TYPES CBAT
+join CLEANSING_ZONE.JER_NAVONE_DBO.CZ_JER_NAVONE_DBO__JERSEY_BUSINESS_ACTIVITY_TYPES BAT ON CBAT.Business_Activity = BAT.code
+where BUSINESS_ACTIVITY IS NOT NULL),
+
+C  as( 
+select UDF.CODE,UDF.description,UDFD.DATA,udfd.linked_to_no_ AS client_no_
+from CLEANSING_ZONE.JER_NAVONE_DBO.CZ_JER_NAVONE_DBO__JERSEY_USER_DEFINED_FIELD UDF
+join CLEANSING_ZONE.JER_NAVONE_DBO.CZ_JER_NAVONE_DBO__ZURICH_USER_DEFINED_FIELD_DATA UDFD on UDFD.code = UDF.code)
+
+select DISTINCT
+A.CLIENT_NO_,A.type,A.name,A.Legal_entity,A.DATE_OF_EXIT,A.STATUS,A.Client_Group,A.Solution_Line,A.ENTITY_NO_,A.ENTITY_TYPE, 
+A.ENTITY_NAME,A.APPOINTMENT_CLASSIFICATION,B.TIMESTAMP,B.BUSINESS_ACTIVITY,B.RISK_RATING,C.CODE,C.description as DNAV_Code,C.DATA,C.client_no_ AS linked_to_no_,A.Client_Status
+FROM A  LEFT JOIN B ON a.client_no_ = b.client_no_
+LEFT JOIN C ON a.client_no_ = C.client_no_

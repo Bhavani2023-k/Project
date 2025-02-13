@@ -1,0 +1,267 @@
+select distinct * from [ASPReports_Custom].[BBG_Costing]
+
+select * from [ASPReports_Custom].[BBG_FixedCosting]
+
+select * from [ASPReports_Custom].[Costing_Client_Location]
+
+select distinct [Costing_Source] from [dbo].[V_ALPHA_SPRING_WH_PBI]
+
+select distinct month_year,Key_Value from [dbo].[PBI_ASLoad_SecCostingOpenPostion] aa
+left join 
+[ASPReports_Custom].[BBG_Costing] bb
+
+on aa.month_year= bb.MonthYear and aa.Key_Value=bb.KeyValue
+[ASPReports_Custom].[BBG_Costing]
+
+
+Select * from [dbo].[PBI_ASLoad_SecCostingOpenPostion]
+
+create view PBIASP as 
+(select * from [dbo].[PBI_ASLoad_SecCostingOpenPostion]SECCOST )
+select distinct security_id from PBIASP
+(select 
+FORMAT(convert (DATE,Date),'MMM-yy') Month_Year,
+COST.Premium,
+* from [dbo].[PBI_ASLoad_SecCostingOpenPostion]SECCOST
+join [ASPReports_Custom].[BBG_Costing] COST on SECCOST.key_Value =  COST.KeyValue and  FORMAT(convert (DATE,SECCOST.Date),'MMM-yy') = COST.MonthYear
+
+)
+select * from [ASPReports_Custom].[ASLoad_SecCostingOpenPosition]
+insert into [dbo].[PBI_ASLoad_SecCostingOpenPostion] ([month_year])
+select FORMAT(convert (DATE,Date),'MMM-yy') Month_Year
+from [dbo].[PBI_ASLoad_SecCostingOpenPostion]
+where Date = Date
+update [dbo].[PBI_ASLoad_SecCostingOpenPostion]
+set [month_year] = 'Sep-22'
+where [month_year] = 'Sep-22'   
+select *from 
+[dbo].[PBI_ASLoad_SecCostingOpenPostion]
+group by date
+select *
+from 
+(select 
+*
+ from [dbo].[PBI_ASLoad_SecCostingOpenPostion]SECCOST
+join [ASPReports_Custom].[BBG_Costing] COST on SECCOST.key_Value =  COST.KeyValue and  FORMAT(convert (DATE,SECCOST.Date),'MMM-yy') = COST.MonthYear
+where SECCOST.Security_ID = '00912XBH6'
+order by Date
+)
+
+select * from [dbo].[PBI_ASLoad_SecCostingOpenPostion]
+where Security_ID = '00912XBH6'
+
+select * from [ASPReports_Custom].[BBG_Costing]
+where MonthYear ='Sep-22'
+
+select * from [ASPReports_Custom].[BBG_FixedCosting]
+
+select * from [ASPReports_Custom].[Costing_Client_Location]
+
+select [dbo].[PBI_ASLoad_SecCostingOpenPostion].*, 
+[ASPReports_Custom].[BBG_Costing].Premium costing_premium,
+[ASPReports_Custom].[BBG_Costing].CorpAction Costing_CorpAction,
+[ASPReports_Custom].[BBG_Costing].[BBGCOSTINGID] Costing_BBGCOSTINGID,
+[ASPReports_Custom].[BBG_Costing].[UniqueID] Costing_UniqueID,
+[ASPReports_Custom].[BBG_Costing].[Application] Costing_Application,
+[ASPReports_Custom].[BBG_Costing].[ClassName] Costing_ClassName,
+[ASPReports_Custom].[BBG_Costing].[KeyValue] Costing_KeyValue,
+[ASPReports_Custom].[BBG_Costing].[Security_Master_and_Packaged] Costing_Secruity_Master_and_Packaged
+      ,[ASPReports_Custom].[BBG_Costing].[AccessFee] Costing_AccessFee
+      ,[ASPReports_Custom].[BBG_Costing].[Intraday_Pricing] Costing_Intraday_Pricing
+      ,[ASPReports_Custom].[BBG_Costing].[End_of_Day_Pricing] Costing_End_of_Day_Pricing
+      
+      ,[ASPReports_Custom].[BBG_Costing].[MonthYear] Costing_MonthYear
+      ,[ASPReports_Custom].[BBG_Costing].[Source] Costing_Source
+      ,[ASPReports_Custom].[BBG_Costing].[DateModified] Costing_DateModified
+      ,[ASPReports_Custom].[BBG_Costing].[DateCreated] Costing_DateCreated
+      ,[ASPReports_Custom].[BBG_Costing].[LastModifiedBy] Costing_LastModifiedBy
+
+
+from [dbo].[PBI_ASLoad_SecCostingOpenPostion]
+ join [ASPReports_Custom].[BBG_Costing]
+on
+select [dbo].[PBI_ASLoad_SecCostingOpenPostion].*, 
+[ASPReports_Custom].[BBG_Costing].Premium costing_premium,
+[ASPReports_Custom].[BBG_Costing].CorpAction Costing_CorpAction,
+[ASPReports_Custom].[BBG_Costing].[BBGCOSTINGID] Costing_BBGCOSTINGID,
+[ASPReports_Custom].[BBG_Costing].[UniqueID] Costing_UniqueID,
+[ASPReports_Custom].[BBG_Costing].[Application] Costing_Application,
+[ASPReports_Custom].[BBG_Costing].[ClassName] Costing_ClassName,
+[ASPReports_Custom].[BBG_Costing].[KeyValue] Costing_KeyValue,
+[ASPReports_Custom].[BBG_Costing].[Security_Master_and_Packaged] Costing_Secruity_Master_and_Packaged
+      ,[ASPReports_Custom].[BBG_Costing].[AccessFee] Costing_AccessFee
+      ,[ASPReports_Custom].[BBG_Costing].[Intraday_Pricing] Costing_Intraday_Pricing
+      ,[ASPReports_Custom].[BBG_Costing].[End_of_Day_Pricing] Costing_End_of_Day_Pricing
+      
+      ,[ASPReports_Custom].[BBG_Costing].[MonthYear] Costing_MonthYear
+      ,[ASPReports_Custom].[BBG_Costing].[Source] Costing_Source
+      ,[ASPReports_Custom].[BBG_Costing].[DateModified] Costing_DateModified
+      ,[ASPReports_Custom].[BBG_Costing].[DateCreated] Costing_DateCreated
+      ,[ASPReports_Custom].[BBG_Costing].[LastModifiedBy] Costing_LastModifiedBy,
+	  [ASPReports_Custom].[BBG_FixedCosting].[BBGCOSTINGID] FixedCosting_BBGCOSTINGID
+      ,[ASPReports_Custom].[BBG_FixedCosting].[UniqueID] FixedCosting_UniqueID
+      ,[ASPReports_Custom].[BBG_FixedCosting].[Application] FixedCosting_Application
+      ,[ASPReports_Custom].[BBG_FixedCosting].[FixedCost] FixedCosting_FixedCost
+      ,[ASPReports_Custom].[BBG_FixedCosting].[MonthYear] FixedCosting_MonthYear
+      ,[ASPReports_Custom].[BBG_FixedCosting].[Source] FixedCosting_Source
+      ,[ASPReports_Custom].[BBG_FixedCosting].[DateModified] FixedCosting_DateModified
+      ,[ASPReports_Custom].[BBG_FixedCosting].[DateCreated] FixedCosting_DateCreated
+      ,[ASPReports_Custom].[BBG_FixedCosting].[LastModifiedBy] FixedCosting_LastModifiedBy
+
+
+from [dbo].[PBI_ASLoad_SecCostingOpenPostion]
+left join [ASPReports_Custom].[BBG_Costing]
+on [dbo].[PBI_ASLoad_SecCostingOpenPostion].month_year = [ASPReports_Custom].[BBG_Costing].MonthYear and [dbo].[PBI_ASLoad_SecCostingOpenPostion].Key_Value = [ASPReports_Custom].[BBG_Costing].KeyValue
+left join [ASPReports_Custom].[BBG_FixedCosting]
+on  [dbo].[PBI_ASLoad_SecCostingOpenPostion].month_year = [ASPReports_Custom].[BBG_FixedCosting].MonthYear and [dbo].[PBI_ASLoad_SecCostingOpenPostion].Application =[ASPReports_Custom].[BBG_FixedCosting].Application
+
+/****** Script for SelectTopNRows command from SSMS  ******/
+SELECT TOP (1000) [ASPReports_Custom].[BBG_FixedCosting].[BBGCOSTINGID] FixedCosting_BBGCOSTINGID
+      ,[ASPReports_Custom].[BBG_FixedCosting].[UniqueID] FixedCosting_UniqueID
+      ,[ASPReports_Custom].[BBG_FixedCosting].[Application] FixedCosting_Application
+      ,[ASPReports_Custom].[BBG_FixedCosting].[FixedCost] FixedCosting_FixedCost
+      ,[ASPReports_Custom].[BBG_FixedCosting].[MonthYear] FixedCosting_MonthYear
+      ,[ASPReports_Custom].[BBG_FixedCosting].[Source] FixedCosting_Source
+      ,[ASPReports_Custom].[BBG_FixedCosting].[DateModified] FixedCosting_DateModified
+      ,[ASPReports_Custom].[BBG_FixedCosting].[DateCreated] FixedCosting_DateCreated
+      ,[ASPReports_Custom].[BBG_FixedCosting].[LastModifiedBy] FixedCosting_LastModifiedBy
+  FROM [ASPReports_Custom].[BBG_FixedCosting]
+  
+  /****** Script for SelectTopNRows command from SSMS  ******/
+SELECT TOP (1000) [BBGCOSTINGID] Costing_BBGCOSTINGID
+      ,[UniqueID] Costing_UniqueID
+      ,[Application] Costing_Application
+      ,[ClassName] Costing_ClassName
+      ,[KeyValue] Costing_KeyValue
+      ,[Security_Master_and_Packaged] Costing_Secruity_Master_and_Packaged
+      ,[CorpAction] Costing_CorpAction
+      ,[AccessFee] Costing_AccessFee
+      ,[Intraday_Pricing] Costing_Intraday_Pricing
+      ,[End_of_Day_Pricing] Costing_End_of_Day_Pricing
+      ,[Premium] Costing_Premium
+      ,[MonthYear] Costing_MonthYear
+      ,[Source] Costing_Source
+      ,[DateModified] Costing_DateModified
+      ,[DateCreated] Costing_DateCreated
+      ,[LastModifiedBy] Costing_LastModifiedBy
+  FROM [AlphaSpringWH_PBI].[ASPReports_Custom].[BBG_Costing]
+  
+  drop view [dbo].[V_ALPHA_SPRING_WH_PBI]
+
+select * from [dbo].[V_ALPHA_SPRING_WH_PBI]
+
+create view [dbo].[V_ALPHA_SPRING_WH_PBI] as
+(select [dbo].[PBI_ASLoad_SecCostingOpenPostion].*, 
+[ASPReports_Custom].[BBG_Costing].Premium costing_premium,
+[ASPReports_Custom].[BBG_Costing].CorpAction Costing_CorpAction,
+[ASPReports_Custom].[BBG_Costing].[BBGCOSTINGID] Costing_BBGCOSTINGID,
+[ASPReports_Custom].[BBG_Costing].[UniqueID] Costing_UniqueID,
+[ASPReports_Custom].[BBG_Costing].[Application] Costing_Application,
+[ASPReports_Custom].[BBG_Costing].[ClassName] Costing_ClassName,
+[ASPReports_Custom].[BBG_Costing].[KeyValue] Costing_KeyValue,
+[ASPReports_Custom].[BBG_Costing].[Security_Master_and_Packaged] Costing_Secruity_Master_and_Packaged
+      ,[ASPReports_Custom].[BBG_Costing].[AccessFee] Costing_AccessFee
+      ,[ASPReports_Custom].[BBG_Costing].[Intraday_Pricing] Costing_Intraday_Pricing
+      ,[ASPReports_Custom].[BBG_Costing].[End_of_Day_Pricing] Costing_End_of_Day_Pricing
+      
+      ,[ASPReports_Custom].[BBG_Costing].[MonthYear] Costing_MonthYear
+      ,[ASPReports_Custom].[BBG_Costing].[Source] Costing_Source
+      ,[ASPReports_Custom].[BBG_Costing].[DateModified] Costing_DateModified
+      ,[ASPReports_Custom].[BBG_Costing].[DateCreated] Costing_DateCreated
+      ,[ASPReports_Custom].[BBG_Costing].[LastModifiedBy] Costing_LastModifiedBy,
+	  [ASPReports_Custom].[BBG_FixedCosting].[BBGCOSTINGID] FixedCosting_BBGCOSTINGID
+      ,[ASPReports_Custom].[BBG_FixedCosting].[UniqueID] FixedCosting_UniqueID
+      ,[ASPReports_Custom].[BBG_FixedCosting].[Application] FixedCosting_Application
+      ,[ASPReports_Custom].[BBG_FixedCosting].[FixedCost] FixedCosting_FixedCost
+      ,[ASPReports_Custom].[BBG_FixedCosting].[MonthYear] FixedCosting_MonthYear
+      ,[ASPReports_Custom].[BBG_FixedCosting].[Source] FixedCosting_Source
+      ,[ASPReports_Custom].[BBG_FixedCosting].[DateModified] FixedCosting_DateModified
+      ,[ASPReports_Custom].[BBG_FixedCosting].[DateCreated] FixedCosting_DateCreated
+      ,[ASPReports_Custom].[BBG_FixedCosting].[LastModifiedBy] FixedCosting_LastModifiedBy,
+	  [AlphaSpringWH_PBI].[ASPReports_Custom].[Costing_Client_Location].[BBGCOSTINGID] Client_Costing_BBGCOSTINGID
+      ,[AlphaSpringWH_PBI].[ASPReports_Custom].[Costing_Client_Location].[UniqueID] Client_Costing_UniqueID
+      ,[AlphaSpringWH_PBI].[ASPReports_Custom].[Costing_Client_Location].[Application] Client_Costing_Application
+      ,[AlphaSpringWH_PBI].[ASPReports_Custom].[Costing_Client_Location].[Client] Client_Costing_Client
+      ,[AlphaSpringWH_PBI].[ASPReports_Custom].[Costing_Client_Location].[Portfolio] Client_Costing_Portfolio
+      ,[AlphaSpringWH_PBI].[ASPReports_Custom].[Costing_Client_Location].[Location] Client_Costing_Location
+      ,[AlphaSpringWH_PBI].[ASPReports_Custom].[Costing_Client_Location].[DateModified] Client_Costing_DateModified
+      ,[AlphaSpringWH_PBI].[ASPReports_Custom].[Costing_Client_Location].[DateCreated] Client_Costing_DateCreated
+      ,[AlphaSpringWH_PBI].[ASPReports_Custom].[Costing_Client_Location].[LastModifiedBy] Client_Costing_LastModifiedBy
+
+
+from [dbo].[PBI_ASLoad_SecCostingOpenPostion]
+left join [ASPReports_Custom].[BBG_Costing]
+on [dbo].[PBI_ASLoad_SecCostingOpenPostion].month_year = [ASPReports_Custom].[BBG_Costing].MonthYear and [dbo].[PBI_ASLoad_SecCostingOpenPostion].Key_Value = [ASPReports_Custom].[BBG_Costing].KeyValue
+left join [ASPReports_Custom].[BBG_FixedCosting]
+on  [dbo].[PBI_ASLoad_SecCostingOpenPostion].month_year = [ASPReports_Custom].[BBG_FixedCosting].MonthYear and [dbo].[PBI_ASLoad_SecCostingOpenPostion].Application =[ASPReports_Custom].[BBG_FixedCosting].Application
+left join [AlphaSpringWH_PBI].[ASPReports_Custom].[Costing_Client_Location] 
+on [dbo].[PBI_ASLoad_SecCostingOpenPostion].Fund_Name = [AlphaSpringWH_PBI].[ASPReports_Custom].[Costing_Client_Location].Portfolio)
+  
+  SECcost_3 = ( calculate (COUNT(PBI_ASLoad_SecCostingOpenPostion[Security_ID]),
+ALLEXCEPT(PBI_ASLoad_SecCostingOpenPostion,PBI_ASLoad_SecCostingOpenPostion[month_year],
+PBI_ASLoad_SecCostingOpenPostion[Security_ID])))
+
+seccost2 = IF(PBI_ASLoad_SecCostingOpenPostion[SECcost_3]>=5, PBI_ASLoad_SecCostingOpenPostion[ASPReports_Custom BBG_Costing.Security_Master_and_Packaged]/5,
+PBI_ASLoad_SecCostingOpenPostion[ASPReports_Custom BBG_Costing.Security_Master_and_Packaged])
+
+Security Master Cost = V_ALPHA_SPRING_WH_PBI[SecCostUnit_final]+V_ALPHA_SPRING_WH_PBI[SecAccessFee Final]
+
+SECCOSTUNIT1 = if(ISBLANK(V_ALPHA_SPRING_WH_PBI[Bloomberg_Unique_ID]),0,1)
+SecCostUnit_final = if (V_ALPHA_SPRING_WH_PBI[SECCOSTUNIT1]=0,0, ((CALCULATE( AVERAGE(V_ALPHA_SPRING_WH_PBI[Costing_Secruity_Master_and_Packaged]),ALLEXCEPT(V_ALPHA_SPRING_WH_PBI,V_ALPHA_SPRING_WH_PBI[month_year],V_ALPHA_SPRING_WH_PBI[Security_ID])))/V_ALPHA_SPRING_WH_PBI[Monthly Security_ID Count]))* V_ALPHA_SPRING_WH_PBI[costing_premium]
+
+SecAccessFee Final = (V_ALPHA_SPRING_WH_PBI[Costing_AccessFee]/V_ALPHA_SPRING_WH_PBI[Daily Security_ID Count]) * V_ALPHA_SPRING_WH_PBI[costing_premium]
+SecAccessFee 1 = IF(ISBLANK(V_ALPHA_SPRING_WH_PBI[Bloomberg_Unique_ID]),0,1)
+
+Pricing Cost = V_ALPHA_SPRING_WH_PBI[PriceCostUnit_FINAL1]+V_ALPHA_SPRING_WH_PBI[PriceAccessFee Final]
+
+PriceCostUnit_FINAL1 = (V_ALPHA_SPRING_WH_PBI[Costing_End_of_Day_Pricing]/V_ALPHA_SPRING_WH_PBI[Daily Security_ID Count])* V_ALPHA_SPRING_WH_PBI[costing_premium]
+PriceCostUnit 2 = IF(V_ALPHA_SPRING_WH_PBI[PriceCostUint 3]=0,0, ((( calculate (AVERAGE(V_ALPHA_SPRING_WH_PBI[Costing_End_of_Day_Pricing]),
+ALLEXCEPT(V_ALPHA_SPRING_WH_PBI,V_ALPHA_SPRING_WH_PBI[Costing_MonthYear],
+V_ALPHA_SPRING_WH_PBI[Security_ID]))))/(V_ALPHA_SPRING_WH_PBI[Monthly Security_ID Count])) )
+PriceCostUint 3 = if(ISBLANK(V_ALPHA_SPRING_WH_PBI[Pricing_Vendor]),0,1)
+
+PRICEACCESSFEE2 = if(ISBLANK(V_ALPHA_SPRING_WH_PBI[Pricing_Vendor]),0,1)
+PriceAccessFee Final = (V_ALPHA_SPRING_WH_PBI[Costing_AccessFee]/V_ALPHA_SPRING_WH_PBI[Daily Security_ID Count])*V_ALPHA_SPRING_WH_PBI[costing_premium]
+
+Monthly Security_ID Count = calculate (COUNT(V_ALPHA_SPRING_WH_PBI[Security_ID]),
+ALLEXCEPT(V_ALPHA_SPRING_WH_PBI,V_ALPHA_SPRING_WH_PBI[month_year],
+V_ALPHA_SPRING_WH_PBI[Security_ID]))
+
+Fixed Cost 1 = V_ALPHA_SPRING_WH_PBI[Security Master Cost]+ V_ALPHA_SPRING_WH_PBI[Pricing Cost]+V_ALPHA_SPRING_WH_PBI[Corparate Action Cost Final]
+FCB Final = (V_ALPHA_SPRING_WH_PBI[Fixed Cost 1]/24504.87)*V_ALPHA_SPRING_WH_PBI[FixedCosting_FixedCost]
+FixedCost(Bloomberg) = IF(AND(V_ALPHA_SPRING_WH_PBI[Bloomberg_Null]=0,V_ALPHA_SPRING_WH_PBI[Userdeff3_bloomberg]=0),0,1)
+
+Daily Security_ID Count = (( calculate (COUNT(V_ALPHA_SPRING_WH_PBI[Security_ID]),
+ALLEXCEPT(V_ALPHA_SPRING_WH_PBI,V_ALPHA_SPRING_WH_PBI[Date],
+V_ALPHA_SPRING_WH_PBI[Security_ID]))))
+
+Corparate Action Cost Final = ((( (V_ALPHA_SPRING_WH_PBI[Costing_CorpAction]/V_ALPHA_SPRING_WH_PBI[Monthly Security_ID Count]) + V_ALPHA_SPRING_WH_PBI[SecAccessFee Final]) * V_ALPHA_SPRING_WH_PBI[costing_premium])*V_ALPHA_SPRING_WH_PBI[Corparate Action Cost 1])*V_ALPHA_SPRING_WH_PBI[SECCOSTUNIT1]
+
+AVGCOST# = average(V_ALPHA_SPRING_WH_PBI[Monthly Security_ID Count])
+
+Security Cost = V_ALPHA_SPRING_WH_PBI[Security_Master_Cost]+V_ALPHA_SPRING_WH_PBI[FCB Final]
+
+Total Cost = V_ALPHA_SPRING_WH_PBI[Security Master Cost]+V_ALPHA_SPRING_WH_PBI[Pricing Cost]+V_ALPHA_SPRING_WH_PBI[Corparate Action Cost Final]+V_ALPHA_SPRING_WH_PBI[FCB Final]
+
+CorporateActionCost Final = ((( (V_ALPHA_SPRING_WH_PBI[Costing_CorpAction]/V_ALPHA_SPRING_WH_PBI[Monthly Security_ID Count]) + V_ALPHA_SPRING_WH_PBI[SecAccessFee Final])
+* V_ALPHA_SPRING_WH_PBI[costing_premium])*V_ALPHA_SPRING_WH_PBI[Corparate Action Cost 1])*V_ALPHA_SPRING_WH_PBI[Bloomberg_Null]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+https://app.powerbi.com/groups/me/reports/cee65d8f-9a20-4c0a-a3d4-eaa5d38bd364/ReportSection?experience=power-bi
+
+
+
+https://app.powerbi.com/links/H_SrK_wVlw?ctid=1036b7ff-423d-4ac2-a4be-0a3650b186f9&pbi_source=linkShare
+

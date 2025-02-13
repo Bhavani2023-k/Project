@@ -1,0 +1,133 @@
+//TCB//
+
+with CLIENT AS
+(
+select 
+JC.CLIENT_NO_, 
+JC.type, 
+JC.name, 
+JC.global_dimension_1_code as Legal_entity,  
+CASE    WHEN CAST(DATE_OF_EXIT AS DATE) = '1753-01-01' THEN NULL    ELSE CAST(DATE_OF_EXIT AS DATE)    END AS DATE_OF_EXIT,
+JC.jurisdiction,
+JC.STATUS,
+JC.ClientAnalysisE as   Client_Group,     
+JC.ClientAnalysisF as Solution_Line,
+JC.last_date_modified,          
+CASE When Status = 0 THEN 'Prospective'When Status = 1 THEN 'Live' When Status = 2 THEN 'Terminal' When Status = 3 THEN 'Closed'eLSE 'Null' END AS Client_Status
+from CLEANSING_ZONE.JER_NAVONE_DBO.CZ_JER_NAVONE_DBO__JERSEY_CLIENT JC 
+where 
+Legal_Entity is not null  and Status in (1,2)  and date_of_exit ='1753-01-01 00:00:00.000'
+and  Legal_Entity != 'LASFJ'  and  Legal_Entity != 'LCSJ' and not contains(JC.client_no_,'TEMP') 
+),
+
+ ENT AS
+(
+select 
+JCE.ENTITY_NO_, JCE1.ENTITY_NO_ as Resource_Entity_No_	, 
+JCE1.ENTITY_TYPE AS Resource_ENTITY_TYPE,
+CASE    WHEN CAST(JCE1.date_appointed AS DATE) = '1753-01-01' THEN NULL    ELSE CAST(JCE1.date_appointed AS DATE)    END AS Resource_DATE_APPOINTED,
+  CASE   WHEN CAST(JCE1.date_resigned AS DATE) = '1753-01-01' THEN NULL   ELSE CAST(JCE1.date_resigned AS DATE)   END AS Resource_Date_Resigned,
+JCE.client_no_ ,  
+JCE.ENTITY_TYPE,  
+JCE.ENTITY_NAME,  
+JCE.ENTITY_TYPE_DESCRIPTION,        
+CASE    WHEN CAST(JCE.date_appointed AS DATE) = '1753-01-01' THEN NULL    ELSE CAST(JCE.date_appointed AS DATE)    END AS DATE_APPOINTED,
+  CASE   WHEN CAST(JCE.date_resigned AS DATE) = '1753-01-01' THEN NULL   ELSE CAST(JCE.date_resigned AS DATE)   END AS Date_Resigned
+from CLIENT JC
+   join CLEANSING_ZONE.JER_NAVONE_DBO.CZ_JER_NAVONE_DBO__JERSEY_CLIENT_ENTITY JCE on JCE.client_no_ = JC.client_no_ 
+  LEFT  join CLEANSING_ZONE.JER_NAVONE_DBO.CZ_JER_NAVONE_DBO__JERSEY_CLIENT_ENTITY JCE1 on JCE.client_no_ =  JCE1.ENTITY_NO_ 
+   and CAST(JCE.date_appointed AS DATE) <= '2019-01-31'
+),
+
+UDF AS(
+select 
+UDF.CODE, 
+UDF.description as DNAV_Code, 
+UDFD.DATA,
+udfd.linked_to_no_,
+udf.status
+from ENT C
+JOIN CLEANSING_ZONE.JER_NAVONE_DBO.CZ_JER_NAVONE_DBO__ZURICH_USER_DEFINED_FIELD_DATA UDFD ON udfd.linked_to_no_ = C.CLIENT_NO_
+JOIN CLEANSING_ZONE.JER_NAVONE_DBO.CZ_JER_NAVONE_DBO__JERSEY_USER_DEFINED_FIELD UDF ON   UDFD.code = UDF.code  -- where UDF.code = 'RGO'
+),
+
+RES AS (
+select DISTINCT 
+CR.CLIENT_NO_,
+CR.type,
+CR.template_code,
+CR.TEMPLATE,
+CR.SERVICE_DIMENSION_1,
+CR.SERVICE_DIMENSION_2,
+CR.SERVICE_DIMENSION_3,
+CR.SERVICE_DIMENSION_4,
+CR.SERVICE_DIMENSION_5,
+CASE    WHEN CAST(CR.Start_Date AS DATE) = '1753-01-01' THEN NULL    ELSE CAST(CR.Start_Date AS DATE)    END AS Start_Date,
+CASE    WHEN CAST(CR.End_date AS DATE) = '1753-01-01' THEN NULL    ELSE CAST(CR.End_date AS DATE)    END AS End_date, 
+RT.AEOI_SERVICE,
+from CLIENT C JOIN 
+CLEANSING_ZONE.JER_NAVONE_DBO.CZ_JER_NAVONE_DBO__JERSEY_CLIENT_RESPONSIBILITIES CR ON CR.CLIENT_NO_ = C.CLIENT_NO_
+join CLEANSING_ZONE.JER_NAVONE_DBO.CZ_JER_NAVONE_DBO__JERSEY_RESPONSIBILITY_TYPE RT on CR.responsibility_type = RT.code),
+
+BUS as (
+select
+CBA.Client_No_, 
+CBA.BUSINESS_ACTIVITY, 
+BAT.Description 
+from CLIENT C
+JOIN CLEANSING_ZONE.JER_NAVONE_DBO.CZ_JER_NAVONE_DBO__JERSEY_CLIENT_BUS__ACTIVITY_TYPES CBA ON C.CLIENT_NO_ = CBA.CLIENT_NO_
+join CLEANSING_ZONE.JER_NAVONE_DBO.CZ_JER_NAVONE_DBO__JERSEY_BUSINESS_ACTIVITY_TYPES BAT on CBA.BUSINESS_ACTIVITY = BAT.Code 
+where CBA.BUSINESS_ACTIVITY is not NULL and Len(CBA.BUSINESS_ACTIVITY) <> 0),
+
+
+
+RRH AS
+(select 
+a.Client_No_,
+a.last_rating,
+a.last_risk_assesment_date, 
+a.risk_rating
+from CLIENT C 
+JOIN (select
+no_ as Client_No_,risk_weighting,DATE as last_risk_assesment_date,risk_rating, current_rating as last_rating
+from CLEANSING_ZONE.JER_NAVONE_DBO.CZ_JER_NAVONE_DBO__JERSEY_RISK_RATING_HISTORY
+where current_rating =1 and date <= '2023-12-31' and risk_rating is not null)a ON C.CLIENT_NO_ = A.CLIENT_NO_
+join 
+(select no_ as Client_No_, Max(date) as curr_risk_assesment_date, current_rating from CLEANSING_ZONE.JER_NAVONE_DBO.CZ_JER_NAVONE_DBO__JERSEY_RISK_RATING_HISTORY
+where current_rating != 1 Group by no_,current_rating)b on a.Client_No_=b.Client_No_),
+
+ GL as (
+Select distinct SUM(Amount) as Sum_Amount , client_no_  ,max(G_L_ACCOUNT_NO_) as G_L_ACCOUNT_NO_
+from (
+SELECT CLIENT_NO_,try_cast(G_L_ACCOUNT_NO_ as integer) AS G_L_ACCOUNT_NO_,aMOUNT FROM CLEANSING_ZONE.JER_NAVONE_DBO.CZ_JER_NAVONE_DBO__JERSEY_CLIENT_G_L_ENTRY   WHERE (G_L_ACCOUNT_NO_ like '4%' OR G_L_ACCOUNT_NO_ like '5%')  and POSTING_DATE <= '31-Dec-2023'
+and aMOUNT <> 0) as alpha   
+where   G_L_ACCOUNT_NO_> 40000 AND G_L_ACCOUNT_NO_ <= 59998 and  G_L_ACCOUNT_NO_ not Like '%[a-z]%'  
+group by client_no_ --,G_L_ACCOUNT_NO_
+ ),  
+LE AS(
+select DISTINCT  CRE.STARTING_DATE,
+E.Client_No_,E.Sum_Amount as Sum_Amount,L.LCY_Code as Currency,CRE.EXCHANGE_RATE_AMOUNT, CRE.CURRENCY_CODE,E.G_L_ACCOUNT_NO_
+from  GL  E
+ LEFT OUTER join CLEANSING_ZONE.JER_NAVONE_DBO.CZ_JER_NAVONE_DBO__JERSEY_CLIENT_GENERAL_LEDGER_SETUP L on L.CLIENT_NO_ = E.client_no_ 
+  join  CLEANSING_ZONE.JER_NAVONE_DBO.CZ_JER_NAVONE_DBO__JERSEY_CURRENCY_EXCHANGE_RATE  CRE  on L.LCY_Code = CRE.currency_code AND  CRE.STARTING_DATE = '2019-12-31'
+  
+   )
+--SELECT * FROM le
+
+ 
+select distinct 
+A.Legal_entity,A.CLIENT_NO_, A.type, A.name,A.Client_Status,A.Client_Group,  A.Solution_Line, A.DATE_OF_EXIT, A.jurisdiction,A.STATUS, ENT.Resource_Entity_No_,ENT.rESOURCE_DATE_APPOINTED,     ENT.rESOURCE_DATE_RESIGNED,ENT.Resource_ENTITY_TYPE,  ENT.DATE_APPOINTED,     ENT.DATE_RESIGNED,A.last_date_modified,ENT.ENTITY_NO_,   ENT.ENTITY_TYPE,    ENT.ENTITY_NAME,    ENT.ENTITY_TYPE_DESCRIPTION,
+B.CODE, B.DNAV_Code, B.DATA,B.linked_to_no_ as UDF_Client_no_,
+C.type as Res_Type,C.template_code,C.TEMPLATE,C.SERVICE_DIMENSION_1,C.SERVICE_DIMENSION_2,C.SERVICE_DIMENSION_3,C.SERVICE_DIMENSION_4,C.SERVICE_DIMENSION_5,C.AEOI_SERVICE,C.start_date, C.End_date , 
+D.Client_No_ AS RIGHT_Client_No_, D.BUSINESS_ACTIVITY, D.Description,
+E.last_risk_assesment_date, E.risk_rating,
+LE.Sum_Amount as account_balance,  LE.Currency as Acc_Currency, LE.EXCHANGE_RATE_AMOUNT, LE.CURRENCY_CODE,LE.Sum_Amount /  LE.EXCHANGE_RATE_AMOUNT as GBP_Sum_Amount,LE.G_L_ACCOUNT_NO_
+from
+Client A
+left join ENT    on A.Client_No_ = ENT.Client_No_
+left  join UDF B on A.Client_No_ = B.linked_to_no_
+left join RES C   on A.Client_No_ = C.Client_No_
+LEFT join BUS D  on A.Client_No_ = D.Client_No_ 
+left  join  RRH E   on A.Client_No_ = E.Client_No_
+  left   join LE on  A.Client_No_ = LE.Client_No_
+  --WHERE A.Client_No_ in( 'JEC00195','JEC00203')
