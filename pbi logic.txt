@@ -1,0 +1,77 @@
+Ans = if(FB_Questionnaire[QuestionNo] = "A5", A5[A5],
+IF(
+    FB_Questionnaire[QuestionNo] = "A6", A6[A6],
+	
+	Answer = (if(FB_Questionnaire[QuestionNo] = "A5", A5[A5] >0, "NIL","0",
+IF(
+    FB_Questionnaire[QuestionNo] = "A6", A6[A6] >0, "NIL","0",
+    IF(
+        FB_Questionnaire[Data source] = "A7", A7[A7], >0, "NIL","0",
+        IF(
+            FB_Questionnaire[QuestionNo] = "A8(A)", 'A8(A)'[A8(A)], >0, "NIL","0",
+            IF(
+                FB_Questionnaire[QuestionNo] = "A8(B)", 'A8(B)'[A8(B)], >0, "NIL","0",
+                IF(
+                    FB_Questionnaire[QuestionNo] = "A9(A)", 'A9(A)'[A9(A)], >0, "NIL","0",
+                    IF(
+                        FB_Questionnaire[QuestionNo] = "A9(B)", 'A9(B)'[A9(B)], >0, "NIL","0",
+                        IF(
+                            FB_Questionnaire[QuestionNo] = "A9(C)", 'A9(C)'[A9(C)], >0, "NIL","0",
+                            IF(
+                                FB_Questionnaire[QuestionNo] = "A9(D)", 'A9(D)'[A9(D)], >0, "NIL","0",
+                                IF( 
+                                    FB_Questionnaire[QuestionNo] = "A9(F)", 'A9(F)'[A9(F)], >0, "NIL","0",
+                                    IF(
+                                        FB_Questionnaire[QuestionNo] = "A9(G)", 'A9(G)'[A9(G)], >0, "NIL","0",
+                                        IF(
+                                            FB_Questionnaire[QuestionNo] = "A9(H)", 'A9(H)'[A9(H)], >0, "NIL","0",
+                                            IF(
+                                                FB_Questionnaire[QuestionNo] = "A21", A21[A21], >0, "NIL","0",
+                                                IF(
+                                                    FB_Questionnaire[QuestionNo] = "A22", A22[A22], >0, "NIL","0",
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+)
+)
+
+
+
+Answer = if(FB_Questionnaire[QuestionNo] = "A5" && A5[A5] >0, "NIL",
+          if(FB_Questionnaire[QuestionNo] = "A5" && A5[A5] <= 0, "0",
+            if(FB_Questionnaire[QuestionNo] = "A6" && A6[A6] >0, "NIL",
+             if(FB_Questionnaire[QuestionNo] = "A6" && A6[A6] <= 0, "0",
+             if(FB_Questionnaire[QuestionNo] = "A7" && A7[A7] >0, "NIL",
+               if(FB_Questionnaire[QuestionNo] = "A7" && A7[A7] <= 0, "0",
+               if(FB_Questionnaire[QuestionNo] = "A8(A)" && 'A8(A)'[A8(A)] >0, "NIL",
+                 if(FB_Questionnaire[QuestionNo] = "A8(A)" && 'A8(A)'[A8(A)] <= 0, "0",
+                 if(FB_Questionnaire[QuestionNo] = "A8(B)" && 'A8(B)'[A8(B)] >0, "NIL",
+                    if(FB_Questionnaire[QuestionNo] = "A8(B)" && 'A8(B)'[A8(B)] <= 0, "0",
+                    if(FB_Questionnaire[QuestionNo] = "A9(A)" && 'A9(A)'[A9(A)] >0, "NIL",
+                       if(FB_Questionnaire[QuestionNo] = "A9(A)" && 'A9(A)'[A9(A)] <= 0, "0",
+                       if(FB_Questionnaire[QuestionNo] = "A9(B)" && 'A9(B)'[A9(B)] >0, "NIL",
+                        if(FB_Questionnaire[QuestionNo] = "A9(B)" && 'A9(B)'[A9(B)] <= 0, "0",
+                        if(FB_Questionnaire[QuestionNo] = "A9(C)" && 'A9(C)'[A9(C)] >0, "NIL",
+                        if(FB_Questionnaire[QuestionNo] = "A9(C)" && 'A9(C)'[A9(C)] <= 0, "0",
+                        if(FB_Questionnaire[QuestionNo] = "A9(D)" && 'A9(D)'[A9(D)]>0, "NIL",
+                        if(FB_Questionnaire[QuestionNo] = "A9(D)" && 'A9(D)'[A9(D)] <= 0, "0",
+                        if(FB_Questionnaire[QuestionNo] = "A9(F)" && 'A9(F)'[A9(F)] >0, "NIL",
+                        if(FB_Questionnaire[QuestionNo] = "A9(F)" && 'A9(F)'[A9(F)] <= 0, "0",
+                        if(FB_Questionnaire[QuestionNo] = "A9(G)" && 'A9(G)'[A9(G)] >0, "NIL",
+                        if(FB_Questionnaire[QuestionNo] = "A9(G)" && 'A9(G)'[A9(G)] <= 0, "0",
+                        if(FB_Questionnaire[QuestionNo] = "A9(H)" && 'A9(H)'[A9(H)] >0, "NIL",
+                        if(FB_Questionnaire[QuestionNo] = "A9(H)" && 'A9(H)'[A9(H)] <= 0, "0",
+                        if(FB_Questionnaire[QuestionNo] = "A21" && 'A21'[A21]>0, "NIL",
+                        if(FB_Questionnaire[QuestionNo] = "A21" && 'A21'[A21] <= 0, "0",
+                        if(FB_Questionnaire[QuestionNo] = "A22" && 'A22'[A22] >0, "NIL",
+                        if(FB_Questionnaire[QuestionNo] = "A22" && 'A22'[A22] <= 0, "0"
+               ))))))))))))))))))))))))))))
